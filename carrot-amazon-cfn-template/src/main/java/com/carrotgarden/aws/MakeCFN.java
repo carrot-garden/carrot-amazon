@@ -35,7 +35,7 @@ public class MakeCFN {
 		final File file = new File(home,
 				".amazon/carrotgarden/credentials/admin-cfn.properties");
 
-		logger.debug("file" + file);
+		logger.debug("file=" + file);
 
 		final AWSCredentials props = new PropertiesCredentials(file);
 
