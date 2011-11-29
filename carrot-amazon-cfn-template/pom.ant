@@ -1,0 +1,13 @@
+<project>
+
+	<property name="host" value="builder.carrotgarden.com" />
+	<property name="username" value="ubuntu" />
+	<property name="keyfile" value="${user.home}/.amazon/carrotgarden/keys/carrotgarden.pem" />
+
+	<target name="build">
+
+		<sshexec commandResource="pom.sh" host="${host}" username="${username}" keyfile="${keyfile}" trust="true"/>
+
+	</target>
+
+</project>

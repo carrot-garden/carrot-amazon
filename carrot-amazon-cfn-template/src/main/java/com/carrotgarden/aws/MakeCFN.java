@@ -22,7 +22,7 @@ public class MakeCFN {
 
 	public static void main(String[] args) throws Exception {
 
-		final String name = "market-" + System.currentTimeMillis();
+		final String name = "builder-" + System.currentTimeMillis();
 
 		logger.debug("init");
 
@@ -47,7 +47,7 @@ public class MakeCFN {
 		request.setStackName(name);
 
 		final File body = new File(
-				"./src/main/resources/carrotgarden/ec2-market.template");
+				"./src/main/resources/carrotgarden/ec2-builder.template");
 
 		final String template = FileUtils.readFileToString(body);
 
@@ -75,7 +75,7 @@ public class MakeCFN {
 			logger.debug("index=" + index);
 			logger.debug("status=" + status);
 
-			Thread.sleep(1000 * 5);
+			Thread.sleep(1000 * 10);
 
 		}
 

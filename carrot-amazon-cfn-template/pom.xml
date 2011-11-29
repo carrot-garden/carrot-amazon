@@ -45,4 +45,64 @@
 
 	</dependencies>
 
+	<profiles>
+
+		<profile>
+			<id>build</id>
+			<properties>
+				<username>ubuntu</username>
+				<hostname>builder.carrotgarden.com</hostname>
+				<keyfile>${user.home}/.amazon/carrotgarden/keys/carrotgarden.pem</keyfile>
+				<command>build.sh</command>
+			</properties>
+			<build>
+				<plugins>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.7</version>
+						<executions>
+							<execution>
+								<id>build</id>
+								<phase>package</phase>
+								<configuration>
+									<target>
+
+										<!-- <ant antfile="pom.ant" target="build"/> -->
+
+										<scp file="src/${command}" todir="${username}@${hostname}:/home/${username}"
+											keyfile="${keyfile}" trust="true" />
+
+										<sshexec
+											command="cd /home/${username} ; chmod u+x ${command} ; sudo ./${command}"
+											host="${hostname}" username="${username}" keyfile="${keyfile}"
+											trust="true" />
+
+									</target>
+								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+						</executions>
+						<dependencies>
+							<dependency>
+								<groupId>com.jcraft</groupId>
+								<artifactId>jsch</artifactId>
+								<version>0.1.45</version>
+							</dependency>
+							<dependency>
+								<groupId>org.apache.ant</groupId>
+								<artifactId>ant-jsch</artifactId>
+								<version>1.8.2</version>
+							</dependency>
+						</dependencies>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+	</profiles>
+
 </project>

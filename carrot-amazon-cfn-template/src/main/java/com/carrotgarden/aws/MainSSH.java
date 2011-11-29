@@ -37,7 +37,7 @@ public class MainSSH {
 		jsch.addIdentity(file.getAbsolutePath());
 
 		final String username = "ubuntu";
-		final String hostname = "market.carrotgarden.com";
+		final String hostname = "builder.carrotgarden.com";
 		final int port = 22;
 
 		final Session session = jsch.getSession(username, hostname, port);
@@ -56,7 +56,10 @@ public class MainSSH {
 
 		exec(session, "sudo apt-get --assume-yes upgrade");
 
-		exec(session, "sudo apt-get --assume-yes install mc tar wget");
+		exec(session, "sudo apt-get --assume-yes install"
+				+ " mc tar wget zip unzip");
+
+		//
 
 		exec(session, "sudo mkdir --verbose --parents /opt/java32");
 
@@ -76,6 +79,26 @@ public class MainSSH {
 						+ " --install /usr/bin/java java /opt/java32/jdk1.7.0_01/bin/java 10");
 
 		exec(session, "java -version 2>&1");
+
+		//
+
+		exec(session, "sudo addgroup --system karaf");
+		exec(session, "sudo adduser --system "
+				+ " --ingroup karaf --home /var/karaf karaf");
+		exec(session, "sudo adduser ubuntu karaf");
+
+		// exec(session, "sudo mkdir --parents /var/karaf");
+
+		// exec(session, "sudo cp --recursive /home/ubuntu/.ssh /var/karaf");
+
+		exec(session,
+				"sudo chown --changes --recursive ubuntu:karaf /var/karaf");
+		exec(session,
+				"sudo chmod --changes --recursive o-rwx,g+rw,g+s,u-s /var/karaf");
+
+		// DIFF=$(expr $(date +%s) - $(stat --format %X /var/lib/apt/lists) )
+
+		// exec(session, "sudo reboot");
 
 		session.disconnect();
 
